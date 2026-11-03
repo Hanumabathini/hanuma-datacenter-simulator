@@ -121,7 +121,7 @@ button.chip:hover,button.fan:hover,button.bay:hover,.sel{outline:2px solid #e8a3
 @media(prefers-reduced-motion:reduce){.three>div,.job{transition:none}.three>div:hover,.job:hover{transform:none}}
 .funit .u{width:44px}
 
-/* Premium graphics upgrade: gradient system, hero rack, card polish. No looping decorative animation on portfolio sections; trainer LEDs/fans are functional status, and respect reduced motion. */
+/* Premium graphics upgrade: gradient system, hero rack, card polish. No looping decorative animation on simulation sections; trainer LEDs/fans are functional status, and respect reduced motion. */
 body{background:radial-gradient(900px 400px at 85% -50px,rgba(232,163,61,.14),transparent 60%),radial-gradient(800px 500px at -10% 20%,rgba(1,169,130,.10),transparent 55%),var(--page)}
 .hero{background:linear-gradient(135deg,#21170f 0%,#160f0a 55%,#0e1316 100%);border:1px solid #3a2a1c;border-radius:18px;padding:36px 28px;margin:16px auto;box-shadow:0 24px 60px rgba(0,0,0,.45)}
 .hero .te{font-size:clamp(56px,11vw,104px);letter-spacing:-.02em}
@@ -147,7 +147,7 @@ body{background:radial-gradient(900px 400px at 85% -50px,rgba(232,163,61,.14),tr
 .hr-track i:nth-child(2){background:#4cc9f0;animation-delay:.8s}
 @media(prefers-reduced-motion:reduce){.hr-led,.hr-track i{animation:none}}
 
-/* Real interface: DCIM/NOC console shell. Portfolio content stays, chrome becomes a console. */
+/* Real interface: DCIM/NOC console shell. Simulation content only, chrome becomes a console. */
 .topbar{position:sticky;top:0;z-index:20;background:#0b0f14;border-bottom:1px solid #2a373d;display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:10px 16px}
 .topbar b{font-size:17px}.topbar .pill{margin-left:auto;background:#1f9d5533;border:1px solid #1f9d55;color:#6fe3a0;border-radius:99px;padding:3px 10px;font-size:12px}
 .topbar input{background:#192024;border:1px solid #2a373d;color:#dce5e8;border-radius:6px;padding:6px 10px;min-width:180px}
@@ -175,7 +175,7 @@ canvas{width:100%;height:150px;background:#0d1214;border:1px solid #2a373d;borde
 </style>
 </head>
 <body>
-<header class="topbar"><b>DC OPS</b><span style="color:#889ba3">DC-01 · Dell PowerEdge</span><input id="topSearch" placeholder="Search servers or fault codes…"><span id="topClock" style="color:#889ba3"></span><span class="pill" id="topAlerts">0 alerts</span></header>
+<header class="topbar"><b>Hanuma</b><span style="color:#889ba3">DC-01 · Dell PowerEdge</span><input id="topSearch" placeholder="Search servers or fault codes…"><span id="topClock" style="color:#889ba3"></span><span class="pill" id="topAlerts">0 alerts</span></header>
 <div class="console"><aside class="sidebar"><h3>Console</h3><a href="#shiftDash">Shift dashboard</a><a href="#workCard">Day in life</a><a href="#project">Trainer</a><a href="#lab">Break a server</a><a href="#wholeRackCard">Whole rack</a></aside><main class="console-main">
 <section class="card" id="shiftDash"><h2>Shift dashboard — today's shift, first</h2>
 <p class="empty">Technician shift first. Review tickets, inspect equipment, troubleshoot, resolve or escalate, document, then hand over. Advanced network content is secondary — basic connectivity and cable troubleshooting only here.</p>
@@ -188,13 +188,14 @@ canvas{width:100%;height:150px;background:#0d1214;border:1px solid #2a373d;borde
 <button class="btn" data-shiftflow="handover">6. Hand over</button>
 </div>
 <div id="shiftTickets"></div>
+<div id="shiftTicketCounts"></div>
 <div id="shiftAlerts"></div>
 <div id="shiftMaint"></div>
 <div id="dashHandover"><h3>Handover notes</h3><p class="empty">Write what the next shift needs to know: what is still open, what to watch, what was fixed.</p><textarea id="handoverInput" rows="3" style="width:100%" placeholder="Handover note: still open, watch out for, fixed today..."></textarea><br><button class="btn pri" data-handover-save="1">Save handover note</button><div id="handoverList"></div><div id="shiftSummary"></div></div>
 </section>
 <div class="wrap">
 <section class="card" id="workCard"><h2>A day in the life — real data center work</h2>
-<p class="empty">Six workflows, built one by one, in the order a technician actually does them. No game, no made-up numbers — each step is the real step, in the real order.</p>
+<p class="empty">Six workflows, built one by one, in the order a technician actually does them. Each step is the real step, in the real order.</p>
 <p><b>Score:</b> <span id="workScore"></span></p>
 <div class="worktabs" role="group" aria-label="Workflows">
 <button class="btn" data-work="tickets">1. Shift tickets</button>
@@ -216,7 +217,7 @@ canvas{width:100%;height:150px;background:#0d1214;border:1px solid #2a373d;borde
 <div class="seg" id="mods" role="group" aria-label="Server module" style="margin:0"></div>
 </header>
 <main class="col"><div class="cab" id="rack" aria-live="polite"></div>
-<section class="card" id="wholeRackCard"><h2>Whole rack — alongside SRV-01</h2><p class="empty">One 42U rack, top to bottom, power at the bottom. Tap a unit to see what it does, Break it to run its error, Restore it to clear it, or Create ticket for it. The Servers unit is SRV-01 itself — its status follows the trainer server above, so a ticket fault on SRV-01 shows here too.</p><div id="wholeRack"></div><div id="wholeRackInfo" style="margin-top:10px"></div><p style="margin-top:10px"><button class="btn" id="wholeRackBreakAll">Break all rack units</button> <button class="btn" id="wholeRackRestoreAll">Restore whole rack</button></p></section>
+<section class="card" id="wholeRackCard"><h2>Whole rack — alongside SRV-01</h2><p class="empty">One 42U rack, top to bottom, power at the bottom. Tap a unit to see what it does, Break it to run its error, Restore it to clear it, or Create ticket for it. The Servers unit is SRV-01 itself — its status follows the trainer server above, so a ticket fault on SRV-01 shows here too.</p><div id="wholeRack"></div><div id="wholeRackInfo" style="margin-top:10px"></div><p style="margin-top:10px"><button class="btn" id="wholeRackBreakAll">Break all rack units</button> <button class="btn" id="wholeRackRestoreAll">Restore whole rack</button></p><p class="empty">Restore clears the rack error. A ticket for that unit, if any, stays open so you can document and close it in Tickets.</p></section>
 <section class="card" id="insp" aria-live="polite"></section>
 <section class="card"><h2 id="logh"></h2><ul id="log"></ul></section></main>
 <aside class="col">
@@ -428,7 +429,7 @@ document.addEventListener("click",e=>{
 });
 $("#all").onclick=()=>V.F.forEach(f=>inject(sel,f));
 $("#rnd").onclick=()=>inject(sel,V.F[rnd(V.F.length)]);
-$("#rst").onclick=()=>{reset();G=null;draw()};
+$("#rst").onclick=()=>{reset();G=null;try{if(typeof WRACK!=='undefined'){WRACK.units.forEach(function(u){u.fault=0;u.faultId=null;});}}catch(e){} try{TICKETS.forEach(function(t){ if(t.code && t.status!=='Closed' && t.status.indexOf('Ready to close')!==0){ t.injected=0; t.faultId=null; ticketInject(t); } });}catch(e){} draw()};
 setInterval(()=>{
  Object.values(MOD).forEach(M=>M.S.forEach((s,i)=>{
   const hot=has(s,"temp"),fan=has(s,"fan")?6:0;
@@ -641,7 +642,7 @@ function dashData(){
  try{alerts+=FRACKFAIL.size;}catch(e){}
  return {total:total,online:online,inlet:total?Math.round(inlet/total):0,power:Math.round(power),alerts:alerts};}
 function drawChart(id,data,color){
- var c=document.getElementById(id);if(!c)return;var x=c.getContext("2d"),W=c.width,H=c.height;
+ var c=document.getElementById(id);if(!c)return;var x=c.getContext("2d");if(!x)return;var W=c.width,H=c.height;
  x.clearRect(0,0,W,H);x.strokeStyle="#2a373d";x.beginPath();x.moveTo(0,H/2);x.lineTo(W,H/2);x.stroke();
  if(data.length<2)return;var mx=Math.max.apply(null,data)*1.1||1,mn=0;
  x.strokeStyle=color;x.lineWidth=2;x.beginPath();
@@ -852,7 +853,7 @@ function renderRackStack() {
 function drawOtdr() {
   var c = document.getElementById('otdrCanvas');
   if (!c) return;
-  var x = c.getContext('2d'), W = c.width, H = c.height;
+  var x = c.getContext('2d'); if (!x) return; var W = c.width, H = c.height;
   x.clearRect(0, 0, W, H);
   x.strokeStyle = '#2a373d';
   x.beginPath(); x.moveTo(0, H / 2); x.lineTo(W, H / 2); x.stroke();
@@ -1220,6 +1221,13 @@ function renderShiftDashboard() {
   });
   for (var oi = 0; oi < order.length; oi++) { if (TICKETS[order[oi]].status !== 'Closed' && TICKETS[order[oi]].status !== 'Escalated') { next = TICKETS[order[oi]]; break; } }
   dt.innerHTML = '<h3>Active tickets</h3><p>Open: ' + open.length + ' · Escalated: ' + esc.length + ' · Closed: ' + closed.length + (next ? ' · Next up: <b>' + next.id + ' — ' + next.title + ' (' + next.pri + ')</b>' : '') + '</p><p class="empty">' + open.map(function(x) { return x.id + ' (' + x.pri + ')'; }).join(', ') + '</p>';
+  var dtc = document.getElementById('shiftTicketCounts'); if (dtc) {
+    var assigned = TICKETS.length;
+    var finished = TICKETS.filter(function(x) { return x.status === 'Closed'; }).length;
+    var progress = TICKETS.filter(function(x) { return x.status === 'In Progress' || (x.status && x.status.indexOf('Ready to close') === 0); }).length;
+    var pending = TICKETS.filter(function(x) { return x.status === 'Open'; }).length;
+    dtc.innerHTML = '<h3>Ticket counts</h3><p>Assigned: <b>' + assigned + '</b> · Finished: <b>' + finished + '</b> · In progress: <b>' + progress + '</b> · Escalated: <b>' + esc.length + '</b> · Pending: <b>' + pending + '</b></p><p class="empty">Assigned = Pending + In progress + Escalated + Finished. Pending = opened but not started yet. In progress = worked, or fixed in rack and ready to close.</p>';
+  }
   var da = document.getElementById('shiftAlerts'); if (da) {
     var srv = null; try { srv = MOD.dell.S[0]; } catch (err) { srv = null; }
     var faults = srv ? srv.faults : [];
@@ -1230,7 +1238,7 @@ function renderShiftDashboard() {
   var dm = document.getElementById('shiftMaint'); if (dm) {
     var rbv = 0, rbi = 0;
     try { if (typeof RB !== 'undefined') { rbv = RB.sections.filter(function(s) { return s.verified; }).length; rbi = RB.sections.filter(function(s) { return s.installed; }).length; } } catch (err) {}
-    dm.innerHTML = '<h3>Maintenance tasks</h3><p class="empty">Closed tickets: ' + WSCORE.tickets + ' · Verified installs: ' + WSCORE.installs + ' · Fiber passes: ' + WSCORE.fiber + ' · DECOMs: ' + WSCORE.decoms + ' · Walks done: ' + WSCORE.walks + ' · Outages restored: ' + WSCORE.outages + ' · Rack sections verified: ' + rbv + ' / ' + (typeof RB !== 'undefined' ? RB.sections.length : 0) + ' (installed ' + rbi + ')</p><p class="empty">Basic connectivity and cable work only here: cable reseats, patch panels, NIC link checks, PDU and cooling walks. Advanced network engineering stays in the Road section below, secondary.</p>';
+    dm.innerHTML = '<h3>Maintenance tasks</h3><p class="empty">Closed tickets: ' + WSCORE.tickets + ' · Verified installs: ' + WSCORE.installs + ' · Fiber passes: ' + WSCORE.fiber + ' · DECOMs: ' + WSCORE.decoms + ' · Walks done: ' + WSCORE.walks + ' · Outages restored: ' + WSCORE.outages + ' · Rack sections verified: ' + rbv + ' / ' + (typeof RB !== 'undefined' ? RB.sections.length : 0) + ' (installed ' + rbi + ')</p><p class="empty">Basic connectivity and cable work only here: cable reseats, patch panels, NIC link checks, PDU and cooling walks. Advanced network engineering is secondary here and is not part of this simulation.</p>';
   }
   var hl = document.getElementById('handoverList'); if (hl) hl.innerHTML = HANDOVER.length ? HANDOVER.map(function(n) { return '<div class="card" style="margin:6px 0"><b>' + n.d + '</b><p>' + n.text + '</p></div>'; }).join('') : '<p class="empty">No handover notes yet. Write one at the end of your shift.</p>';
   var ds = document.getElementById('shiftSummary'); if (ds) ds.innerHTML = '<h3>End-of-shift summary</h3><p class="empty">Closed: ' + closed.map(function(x) { return x.id; }).join(', ') + (closed.length ? '' : 'none yet') + ' · Still open: ' + open.map(function(x) { return x.id; }).join(', ') + (open.length ? '' : 'none') + ' · Escalated: ' + esc.map(function(x) { return x.id; }).join(', ') + (esc.length ? '' : 'none') + '</p>';
@@ -1374,6 +1382,7 @@ function wrEffectiveFault(i){
 }
 function renderWholeRack(){
   var el = document.getElementById('wholeRack'); if (!el) return;
+  WRACK.units.forEach(function(u){ if (u.code && u.fault && !wrTrainerFault(u)) { u.fault=0; u.faultId=null; } });
   var h = '';
   WRACK.units.forEach(function(u, i){
     var tf = wrTrainerFault(u);
